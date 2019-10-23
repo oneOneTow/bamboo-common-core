@@ -16,6 +16,8 @@ public interface BaseJooqDao<P> {
      */
     P insert(P pojo);
 
+
+
     /**
      * 删除满足条件的记录
      *
