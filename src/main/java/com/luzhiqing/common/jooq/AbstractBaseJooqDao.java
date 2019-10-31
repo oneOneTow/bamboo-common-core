@@ -1,10 +1,14 @@
 package com.luzhiqing.common.jooq;
 
+import com.luzhiqing.common.web.Opertor;
 import org.jooq.*;
+import org.jooq.types.UInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,11 @@ public abstract class AbstractBaseJooqDao<R extends TableRecord<R>, T extends Ta
      * 主键
      */
     protected Field<Integer> pkField;
+
+    /**---------公共信息-------**/
+    protected Field<Timestamp> createTimeField;
+    protected Field<UInteger> createUserField;
+    protected Field<String> createUserNameField;
 
     /**
      * 主键名
@@ -63,12 +72,34 @@ public abstract class AbstractBaseJooqDao<R extends TableRecord<R>, T extends Ta
                 break;
             }
         }
+        initFields();
     }
+
+    protected void initFields(){
+        if(null == createTimeField){
+            createTimeField = (Field<Timestamp>)getTable().field(CommonField.create_time);
+        }
+        if(null == createUserField){
+            createUserField = (Field<UInteger>)getTable().field(CommonField.create_user);
+        }
+        if(null == createUserNameField){
+            createUserNameField = (Field<String>)getTable().field(CommonField.create_user_name);
+        }
+    }
+
+    protected void bindingCreatePublicInfo(Record record){
+        Opertor opertor = Opertor.build();
+        record.setValue(createTimeField,Timestamp.valueOf(LocalDateTime.now()));
+        record.setValue(createUserField, UInteger.valueOf(opertor.getUid()));
+        record.setValue(createUserNameField,opertor.getName());
+    }
+
 
     @Override
     public P insert(P pojo) {
         R record = table.newRecord();
         record.from(pojo);
+        bindingCreatePublicInfo(record);
         return dsl.insertInto(table).set(record).returning().fetchOne().into(clazz);
     }
 
@@ -116,6 +147,11 @@ public abstract class AbstractBaseJooqDao<R extends TableRecord<R>, T extends Ta
         record.from(pojo);
         List<Condition> conditions = createConditions(record);
         return dsl.selectFrom(table).where(conditions).fetchOneInto(clazz);
+    }
+
+    @Override
+    public P findById(Integer id) {
+        return dsl.selectFrom(table).where(pkField.eq(id)).fetchOneInto(clazz);
     }
 
     @Override

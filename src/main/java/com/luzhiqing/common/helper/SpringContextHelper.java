@@ -3,6 +3,7 @@ package com.luzhiqing.common.helper;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * @Description:
@@ -10,6 +11,7 @@ import org.springframework.context.ApplicationContextAware;
  * @Author: 陆志庆
  * @CreateDate: 2019/10/3 03:25
  */
+@Component
 public class SpringContextHelper implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
     @Override

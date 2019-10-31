@@ -66,6 +66,14 @@ public interface BaseJooqDao<P> {
     P selectOne(P pojo);
 
     /**
+     * 根据主键查询
+     *
+     * @param id
+     * @return
+     */
+    P findById(Integer id);
+
+    /**
      * 批量插入数据
      *
      * @param pojos

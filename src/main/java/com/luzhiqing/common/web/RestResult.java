@@ -8,7 +8,7 @@ import lombok.Data;
  * @CreateDate: 2019/3/5 17:45
  */
 @Data
-public class BeanResult<T> {
+public class RestResult<T> {
     private static final long serialVersionUID = 1L;
 
 
@@ -26,16 +26,16 @@ public class BeanResult<T> {
 
     private T data;
 
-    public BeanResult() {
+    public RestResult() {
         super();
     }
 
-    public BeanResult(T data) {
+    public RestResult(T data) {
         super();
         this.data = data;
     }
 
-    public BeanResult(Throwable e) {
+    public RestResult(Throwable e) {
         super();
         this.msg = e.toString();
         this.code = UNKNOWN_EXCEPTION;

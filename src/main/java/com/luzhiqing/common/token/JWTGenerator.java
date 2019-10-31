@@ -9,6 +9,7 @@ package com.luzhiqing.common.token;
 public class JWTGenerator extends AbstractGenerator {
     @Override
     public Token generate(UserInfo userInfo) {
+
         return null;
     }
 }

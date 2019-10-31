@@ -1,5 +1,7 @@
 package com.luzhiqing.common.token;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * @Description:
  * @version:

@@ -1,6 +1,7 @@
 package com.luzhiqing.common.token;
 
 
+import com.alibaba.fastjson.JSON;
 import com.luzhiqing.common.util.AESUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -57,5 +58,14 @@ public class TokenUtil {
             }
         }
         return null;
+    }
+
+    public static Payload acquirePayload(String token){
+        String [] tokens = token.split(TOKEN_SPLIT);
+        if (3!=tokens.length){
+           throw new RuntimeException("用户未授权");
+        }
+        String payloadJson = tokens[2];
+        return JSON.parseObject(payloadJson,Payload.class);
     }
 }

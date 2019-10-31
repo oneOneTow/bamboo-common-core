@@ -32,7 +32,7 @@ public class GeneratorFactory {
             this.generator = new JWTGenerator();
         }
         if(TokenType.CUSTOM.equals(properties.getType())){
-            this.generator = new CustomGenerator();
+            this.generator = new CustomGenerator(this.properties);
         }
     }
 
@@ -46,8 +46,8 @@ public class GeneratorFactory {
         }
         ClassLoader classLoader = this.generator.getClass().getClassLoader();
         Class[] classes = this.generator.getClass().getInterfaces();
-        Object proxy = Proxy.newProxyInstance(classLoader, classes, new GeneratorInvocationHandler(this.generator));
-        return (Generator) proxy;
+        Generator proxy = (Generator) Proxy.newProxyInstance(classLoader, classes, new GeneratorInvocationHandler(this.generator));
+        return proxy;
     }
 
 
